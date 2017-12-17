@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                ArrayList<Noticia> clickNoticiaArraylist = new ArrayList<Noticia>(noticiaArrayList);
+                ArrayList<Noticia> clickNoticiaArraylist = new ArrayList<>(noticiaArrayList);
 
                 Noticia currentNoticia = clickNoticiaArraylist.get(position);
 
