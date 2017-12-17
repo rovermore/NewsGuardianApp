@@ -23,9 +23,5 @@
         android:id="@+id/title_view"
         android:text="Titular noticia"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/webUrl_view"
-        android:text="urlWeb"/>
+
 </LinearLayout>

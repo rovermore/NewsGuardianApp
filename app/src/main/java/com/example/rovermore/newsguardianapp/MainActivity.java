@@ -1,11 +1,14 @@
 package com.example.rovermore.newsguardianapp;
 
 import android.app.LoaderManager;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private ProgressBar progressBar;
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
     private EditText userQuery;
+
+    ListView noticiaListView=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
+
+
     }
 
 
@@ -65,11 +72,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //Inflates the adapter with the arraylist fetched from the jason
         NoticiaAdapter adapter = new NoticiaAdapter(this, noticiaArrayList);
         //Connects the ListView with the xml
-        ListView noticiaListView = (ListView) findViewById(R.id.list);
+        noticiaListView = (ListView) findViewById(R.id.list);
         //Sets empty state in case any result is found
         noticiaListView.setEmptyView(emptyStateView);
         //Sets the adapter to the view
         noticiaListView.setAdapter(adapter);
+
+        noticiaListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ArrayList<Noticia> clickNoticiaArraylist = new ArrayList<Noticia>(noticiaArrayList);
+
+                Noticia currentNoticia = clickNoticiaArraylist.get(position);
+
+                String urlNoticia = currentNoticia.getUrl();
+
+                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+
+                intent.putExtra(SearchManager.QUERY, urlNoticia);
+
+                startActivity(intent);
+
+            }
+        });
 
     }
 
