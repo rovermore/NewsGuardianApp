@@ -1,5 +1,6 @@
 package com.example.rovermore.newsguardianapp;
 
+import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,16 +11,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Noticia>> {
 
     private TextView emptyStateView;
     private ProgressBar progressBar;
-
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
-
     private EditText userQuery;
 
     @Override
@@ -31,72 +31,80 @@ public class MainActivity extends AppCompatActivity {
         emptyStateView = (TextView) findViewById(R.id.empty_state);
 
         //Saves ProgresBar view into an object in order to treat it from java
-        progressBar= (ProgressBar) findViewById(R.id.loading_spinner);
+        progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
 
         //Takes the search form the user and ads it into a String
-        userQuery = (EditText)findViewById(R.id.noticia_search_bar);
+        userQuery = (EditText) findViewById(R.id.noticia_search_bar);
 
-        Button search = (Button)findViewById(R.id.search_button);
+        Button search = (Button) findViewById(R.id.search_button);
 
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Checks If the user did not write a query Showing a toast in case not
+                if (userQuery != null) {
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    Log.v("initloader", "The oncreate has runned and loader has started");
+                    getLoaderManager().initLoader(0, null, MainActivity.this).forceLoad();
+
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Introduce a query",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
     }
 
 
-    private void createUI(final ArrayList<Noticia> bookArrayList){
+    private void createUI(final ArrayList<Noticia> noticiaArrayList) {
 
-
-
-        NoticiaAdapter adapter = null;
-
-        adapter = new NoticiaAdapter(this, bookArrayList);
-
-        ListView booksListView = (ListView) findViewById(R.id.list_item);
-
-        booksListView.setEmptyView(emptyStateView);
-
-        booksListView.setAdapter(adapter);
-
+        //Inflates the adapter with the arraylist fetched from the jason
+        NoticiaAdapter adapter = new NoticiaAdapter(this, noticiaArrayList);
+        //Connects the ListView with the xml
+        ListView noticiaListView = (ListView) findViewById(R.id.list);
+        //Sets empty state in case any result is found
+        noticiaListView.setEmptyView(emptyStateView);
+        //Sets the adapter to the view
+        noticiaListView.setAdapter(adapter);
 
     }
 
 
+    @Override
+    public Loader<ArrayList<Noticia>> onCreateLoader(int i, Bundle bundle) {
 
-    public Loader<ArrayList<Noticia>> onCreateLoader(int i, Bundle bundle){
-
-        final String userSearchText= userQuery.getText().toString();
-        Log.v("onCreateLoader","onCreate loader running loader should be created");
+        final String userSearchText = userQuery.getText().toString();
+        Log.v("onCreateLoader", "onCreate loader running loader should be created");
 
         NoticiaLoader noticiaLoader = new NoticiaLoader(this, userSearchText);
-
-
 
         return noticiaLoader;
     }
 
 
+    @Override
     public void onLoadFinished(Loader<ArrayList<Noticia>> loader, ArrayList<Noticia> noticia) {
 
-        Log.v("onLoadFinished","update of the UI should start and create de interface");
-
-
+        Log.v("onLoadFinished", "update of the UI should start and create de interface");
 
         //Makes progerss bar disappear when the loader is loaded
         progressBar.setVisibility(View.GONE);
 
         createUI(noticia);
 
-
         getLoaderManager().destroyLoader(0);
-
 
     }
 
-
+    @Override
     public void onLoaderReset(Loader<ArrayList<Noticia>> loader) {
 
-        Log.v("onLoaderReset","Create a new arraylist");
+        Log.v("onLoaderReset", "Create a new arraylist");
         createUI(new ArrayList<Noticia>());
-
 
 
     }

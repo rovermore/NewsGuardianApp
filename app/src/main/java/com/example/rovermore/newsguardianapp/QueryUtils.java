@@ -43,9 +43,6 @@ public class QueryUtils {
                         .appendQueryParameter("q",str)
                         .appendQueryParameter("api-key", API_KEY);
 
-
-
-
         String urlString = uriBuilderQuery.build().toString();
 
         return urlString;
@@ -72,8 +69,6 @@ public class QueryUtils {
         String jSonResponse = "";
 
         if (url == null) {
-
-
 
             return jSonResponse;
         }
@@ -185,8 +180,6 @@ public class QueryUtils {
             noticiaArrayList.add(noticia);
 
         }
-
-
 
         return noticiaArrayList;
     }
