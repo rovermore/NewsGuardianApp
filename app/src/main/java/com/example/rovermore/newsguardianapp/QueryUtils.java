@@ -1,5 +1,6 @@
 package com.example.rovermore.newsguardianapp;
 
+import android.net.Uri;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -24,29 +25,31 @@ import static com.example.rovermore.newsguardianapp.MainActivity.LOG_TAG;
 public class QueryUtils {
 
 
+    public static final String URL_NOTICIA_REQUEST ="https://content.guardianapis.com/search?q";
+    public static final String API_KEY= "05a3c47e-b7a6-410a-831f-ede407255b16";
+
     private QueryUtils() {
     }
 
 
     //This method generates a url from the query that user inputs
-    /*public static String createUrlWithQuery (String str){
+    public static String createUrlWithQuery (String str){
 
-        String query = str;
+        Uri.Builder uriBuilderQuery = new Uri.Builder();
 
-        query.replace(" ","+");
+        uriBuilderQuery.scheme("https")
+                        .authority("content.guardianapis.com")
+                        .appendPath("search")
+                        .appendQueryParameter("q",str)
+                        .appendQueryParameter("api-key", API_KEY);
 
-        StringBuilder url = new StringBuilder(URL_BOOKS_REQUEST);
 
-        url.append("q=");
 
-        url.append(query);
 
-        url.append("&maxResults=10");
-
-        String urlString = String.valueOf(url);
+        String urlString = uriBuilderQuery.build().toString();
 
         return urlString;
-    }*/
+    }
 
     public static URL createURL(String stringUrl){
 

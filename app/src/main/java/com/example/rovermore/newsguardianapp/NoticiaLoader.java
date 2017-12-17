@@ -39,7 +39,8 @@ public class NoticiaLoader extends AsyncTaskLoader{
             e.printStackTrace();
         }
 
-        String stringUrl = userQuery;
+
+        String stringUrl = QueryUtils.createUrlWithQuery(String.valueOf(userQuery));
 
         URL urlObject = QueryUtils.createURL(stringUrl);
 

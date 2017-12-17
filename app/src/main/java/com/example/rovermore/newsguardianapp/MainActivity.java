@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -20,10 +21,24 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private EditText userQuery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Inflates emptyStateView in order to not apperar in screen until loading has finished
+        emptyStateView = (TextView) findViewById(R.id.empty_state);
+
+        //Saves ProgresBar view into an object in order to treat it from java
+        progressBar= (ProgressBar) findViewById(R.id.loading_spinner);
+
+        //Takes the search form the user and ads it into a String
+        userQuery = (EditText)findViewById(R.id.noticia_search_bar);
+
+        Button search = (Button)findViewById(R.id.search_button);
+
+
     }
 
 
